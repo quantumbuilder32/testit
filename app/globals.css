@@ -1,0 +1,38 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primaryColor: #ffea00;
+  --secondaryColor: #F4F7FC;
+  --tertiaryColor: #0582f0;
+
+  --mediumFontSize: 1.3rem;
+
+}
+
+*,
+*::before,
+*::after {
+  /* border: 1px solid red !important; */
+}
+
+
+label {
+  font-size: var(--mediumFontSize);
+  font-weight: bold;
+}
+
+input,
+textarea {
+  padding: 1rem;
+  background-color: var(--secondaryColor);
+  border-radius: .2rem;
+  border: 1px solid #ddd;
+}
+
+input:focus,
+textarea:focus {
+  background-color: #fff;
+  outline: none;
+}
