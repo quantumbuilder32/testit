@@ -8,18 +8,16 @@ import TextAreaInput from '../textAreaInput/TextAreaInput'
 import { sendToZapier } from '@/serverFunctions/handleSendToZapier'
 
 const userFormSchema = Z.object({
-    name: Z.string().min(1),
-    email: Z.string().email(),
-    contentType: Z.string().min(1),
+    firstKeyword: Z.string().min(1),
+    secondKeyword: Z.string().min(1),
 })
 
 type userForm = Z.infer<typeof userFormSchema>
 
 export default function ContactForm() {
     const initialForm: userForm = {
-        name: "",
-        email: "",
-        contentType: "",
+        firstKeyword: "",
+        secondKeyword: "",
     }
 
     const [formObj, formObjSet] = useState<userForm>({ ...initialForm })
@@ -36,11 +34,11 @@ export default function ContactForm() {
     }>
 
     const [moreFormInfoObj,] = useState<moreFormInfo>({
-        contentType: {
-            label: "Content You'd like to make",
-            type: "textArea",
-            placeHolder: "What kind of content would you like to make on tiktok"
-        },
+        // f: {
+        //     label: "Content You'd like to make",
+        //     type: "textArea",
+        //     placeHolder: "What kind of content would you like to make on tiktok"
+        // },
     })
 
     const [formErrors, formErrorsSet] = useState<Partial<{

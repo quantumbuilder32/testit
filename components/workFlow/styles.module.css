@@ -1,0 +1,8 @@
+.main {
+    display: grid;
+    gap: 1rem;
+}
+
+.row {
+    display: grid;
+}
