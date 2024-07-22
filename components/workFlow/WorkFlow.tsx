@@ -2137,7 +2137,11 @@ export default function WorkFlow() {
                     <div className='snap' style={{ display: "flex", overflowX: "auto", gap: '1rem', alignContent: "flex-start" }}>
                         {Object.entries(keywordTopics).map(([key, value]) => {
                             return (
-                                <div key={key} style={{ flex: "0 0 auto", width: "min(400px, 90%)", display: "grid", alignContent: "flex-start", gridTemplateRows: "auto 1fr" }}>
+                                <div key={key} style={{ flex: "0 0 auto", width: "min(400px, 90%)", display: "grid", alignContent: "flex-start", gridTemplateRows: "auto 1fr", position: "relative", zIndex: 0 }}>
+                                    <Image alt={`${value.topItem.title} cover image`} src={value.topItem.visual?.url ?? defaultImageSrc} width={400} height={400} style={{ objectFit: "cover", zIndex: -1, position: "absolute", top: 0, left: 0, width: "100%", height: "100%" }} />
+
+                                    <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0, backgroundColor: "rgba(0,0,0,0.6)", zIndex: -1 }}></div>
+
                                     <button style={{ backgroundColor: keywordTopics[key].using ? "orange" : "grey" }}
                                         onClick={() => {
                                             keywordTopicsSet(prevTopics => {
@@ -2148,11 +2152,7 @@ export default function WorkFlow() {
                                         }}
                                     >{key}</button>
 
-                                    <div style={{ position: "relative", zIndex: 0, color: "#fff", padding: "1rem", display: "grid", alignContent: "flex-start", gap: "1rem" }}>
-                                        <Image alt={`${value.topItem.title} cover image`} src={defaultImageSrc} fill={true} style={{ objectFit: "cover", zIndex: -1 }} sizes='90vw' />
-
-                                        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0, backgroundColor: "rgba(0,0,0,0.6)", zIndex: -1 }}></div>
-
+                                    <div style={{ color: "#fff", padding: "1rem", display: "grid", alignContent: "flex-start", gap: "1rem", overflowY: "auto", maxHeight: "60vh" }}>
                                         <h2>{value.topItem.title}</h2>
 
                                         {value.topItem.summary !== undefined && (
