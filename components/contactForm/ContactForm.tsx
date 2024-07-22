@@ -5,7 +5,6 @@ import { toast } from 'react-hot-toast'
 import Z from "zod"
 import TextInput from '../textInput/TextInput'
 import TextAreaInput from '../textAreaInput/TextAreaInput'
-import { sendToZapier } from '@/serverFunctions/handleSendToZapier'
 
 const userFormSchema = Z.object({
     firstKeyword: Z.string().min(1),
@@ -76,7 +75,7 @@ export default function ContactForm() {
         try {
             if (!userFormSchema.safeParse(formObj).success) return toast.error("Form not valid")
 
-            await sendToZapier(formObj)
+            // await sendToZapier(formObj)
 
             toast.success("Sent!")
 
