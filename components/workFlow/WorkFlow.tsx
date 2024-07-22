@@ -1,12 +1,14 @@
 "use client"
-import { getFeedApiBySearch, getFeedApiMoreInfo } from '@/serverFunctions/handleApi'
+import { getFeedApiBySearch, getFeedApiMoreInfo, getWebsiteBody } from '@/serverFunctions/handleApi'
 import React, { useState, useMemo, useEffect } from 'react'
 // import feedlyStorageJSON from "@/feedlyStorage.json"
-import { feedlyDatabaseResult, feedlyApiResult, feedlyApiMoreInfoResponse } from '@/types';
+import { feedlyDatabaseResult, feedlyApiResult, feedlyApiMoreInfoResponse, feedlyMoreInfoApiItem } from '@/types';
 import styles from "./styles.module.css"
 import { addFeedlyResultsToDatabase, getFeedlyDatabaseResultsBySearch } from '@/serverFunctions/handleDatabase';
 import { toast } from 'react-hot-toast';
 import ShowMore from '../showMore/ShowMore';
+import Image from 'next/image';
+import { defaultImageSrc } from '@/utility/globalState';
 
 const defaultObj = {
     "ai": {
@@ -1858,6 +1860,145 @@ const defaultObj = {
     }
 }
 
+const defaultKeywords = {
+    "ai": {
+        "topItem": {
+            "fingerprint": "1ec560e3",
+            "language": "en",
+            "id": "sy14+xS4IR2DYAYnC8va9p9MtNsr8N55SjSeGsIggMA=_1873d112622:635315e:3c16e4a2",
+            "keywords": [
+                "Uncategorized",
+                "April Fools"
+            ],
+            "originId": "https://www.airlinereporter.com/?p=61318",
+            "recrawled": 1681871358480,
+            "updateCount": 3,
+            "origin": {
+                "streamId": "feed/http://www.airlinereporter.com/feed/",
+                "title": "AirlineReporter",
+                "htmlUrl": "https://www.airlinereporter.com"
+            },
+            "title": "Breaking News: Elon Musk Purchasing a Majority Stake in American Airlines",
+            "content": {
+                "content": "<p><em><sub>April 2nd Author’s Note : we hope everyone appreciated this April Fool’s joke (or at least realized it was a joke by the third line in). Fake news is a problem, so to make sure <span>nobody</span> gets confused, we wanted to drop this disclaimer to make it clear that this is <span>not</span> a real story. Thanks for reading!</sub></em></p>\n<p>Elon Musk announced he will purchase a 51% stake in American Airlines. This continues his recent pattern of acquiring companies that play central roles in American society and infrastructure. </p>\n<p>He announced the news on Twitter and in a press conference. When asked about his interest in American Airlines, Musk stated “I realized that I simply enjoy buying companies with birds on their logos. And when I have such an obscene amount of money why should I try to fight those urges?”</p>\n<figure class=\"wp-block-image\"><img sizes=\"(max-width: 754px) 100vw, 754px\" src=\"https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-754x503.jpg\" width=\"754\" alt=\"\" srcset=\"https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-754x503.jpg 754w, https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-250x167.jpg 250w, https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-768x512.jpg 768w, https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-1536x1024.jpg 1536w, https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-2048x1365.jpg 2048w\" class=\"wp-image-61320\" height=\"503\"><figcaption class=\"wp-element-caption\">Elon Musk making his announcement</figcaption></figure>\n<p>Later in the press conference Mr. Musk outlined a series of major changes he plans for the airline’s operations. Effective immediately, American will accept dogecoin for ticket purchases, and in coming years will transition to a completely blockchain-based payment system. The airline will start charging flyers a nominal fee of $10 for passengers to display their TSA PreCheck status on their boarding passes. </p>\n<p>Major changes are in store for American’s workforce as well. All employees will be required to work in-office at corporate headquarters. This may prove challenging for the airline’s pilots and flight attendants, who are accustomed to working on aircraft, but Mr. Musk expects them to rise to the challenge. In line with his views about free speech, Mr. Musk wants the Twitter handle @AmericanAir to take controversial political stances and to share conspiracy theories. To maximize profits, Mr. Musk plans to lay off around a third of the airline’s workers. However analysts expect that move to be followed by frantic attempts to rehire most of the furloughed employees shortly thereafter. </p>\n<figure class=\"wp-block-image\"><img sizes=\"(max-width: 754px) 100vw, 754px\" src=\"https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-754x566.jpg\" width=\"754\" alt=\"\" srcset=\"https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-754x566.jpg 754w, https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-250x188.jpg 250w, https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-768x576.jpg 768w, https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-1536x1152.jpg 1536w, https://www.airlinereporter.com/wp-content/uploads/2021/06/IMG_9530-2048x1536.jpg 2048w\" class=\"wp-image-59609\" height=\"566\"><figcaption class=\"wp-element-caption\">American Airlines aircraft at Miami International Airport</figcaption></figure>\n<p>Some industry experts also expressed excitement that Mr. Musk’s family of companies could offer multimodal transport itineraries. For example, passengers could hire a Tesla-operated rideshare to the airport, fly an American Airlines flight, then connect to a SpaceX moon rocket that may or may not explode on landing. Said SpaceX employee April Phules, “after experiencing the inside of a Falcon 9 rocket, I think American Airlines passengers will be a little more forgiving about the airline’s economy class legroom.” </p>\n<p>While some passengers seem worried about the impact Musk’s takeover will have on the airline, others approved of the move. “As a proud owner of three Teslas I enjoy feeling better than other people,” said Bay Area resident Hugh Jassol. “I look forward to experiencing that same sense of superiority when flying American Airlines too.”</p>\n<figure class=\"wp-block-image\"><img sizes=\"(max-width: 754px) 100vw, 754px\" src=\"https://www.airlinereporter.com/wp-content/uploads/2019/07/DSC_2695-2-754x424.jpg\" width=\"754\" alt=\"N576AA above LAX's famous spotting park across from In-N-Out in 2015.\" srcset=\"https://www.airlinereporter.com/wp-content/uploads/2019/07/DSC_2695-2-754x424.jpg 754w, https://www.airlinereporter.com/wp-content/uploads/2019/07/DSC_2695-2-250x141.jpg 250w, https://www.airlinereporter.com/wp-content/uploads/2019/07/DSC_2695-2-768x432.jpg 768w\" class=\"wp-image-55261\" height=\"424\"><figcaption class=\"wp-element-caption\">American’s MD-80s are likely glad they retired before all this went down</figcaption></figure>\n<p>American Airlines shareholders readied themselves for extreme volatility in the airline’s stock price in the weeks ahead. When asked for comment, SEC Chair Gary Gensler simply burst into tears. </p>\n<p><em>Note from the editor: This story is not real. Elon if you are reading this PLEASE DO NOT ACTUALLY BUY AMERICAN AIRLINES.</em></p>",
+                "direction": "ltr"
+            },
+            "author": "Manu Venkat",
+            "crawled": 1680356746786,
+            "published": 1680356569000,
+            "summary": {
+                "content": "April 2nd Author’s Note : we hope everyone appreciated this April Fool’s joke (or at least realized it was a joke by the third line in). Fake news is a problem, so to make sure nobody gets confused, we wanted to drop this disclaimer to make it clear that this is not a real story. […]",
+                "direction": "ltr"
+            },
+            "alternate": [
+                {
+                    "href": "https://www.airlinereporter.com/2023/04/breaking-news-elon-musk-purchasing-a-majority-stake-in-american-airlines/",
+                    "type": "text/html"
+                }
+            ],
+            "visual": {
+                "processor": "feedly-nikon-v3.1",
+                "contentType": "image/jpeg",
+                "url": "https://www.airlinereporter.com/wp-content/uploads/2023/03/Elon_Musk_at_a_Press_Conference-2048x1365.jpg",
+                "width": 2048,
+                "height": 1365
+            },
+            "canonicalUrl": "https://www.airlinereporter.com/2023/04/breaking-news-elon-musk-purchasing-a-majority-stake-in-american-airlines/",
+            "unread": true,
+            "engagement": 2300
+        },
+        "using": true
+    },
+    "mom": {
+        "topItem": {
+            "language": "en",
+            "fingerprint": "cc0a4237",
+            "id": "R4JqAkyLsyF/7sohQgoIDLZ2BvtHiFrMhQild/oFY4M=_190ae216e1e:1569d73:9e1949c6",
+            "originId": "https://themomedit.com/?p=341639",
+            "keywords": [
+                "#momlife",
+                "Weekend Ramblings"
+            ],
+            "origin": {
+                "streamId": "feed/http://themomedit.com/feed/",
+                "title": "The Mom Edit",
+                "htmlUrl": "https://themomedit.com/"
+            },
+            "title": "Weekend 7.13",
+            "crawled": 1720908344862,
+            "published": 1720908000000,
+            "author": "Shana",
+            "alternate": [
+                {
+                    "type": "text/html",
+                    "href": "https://themomedit.com/nsale-excitement-weekend-style-picks/"
+                }
+            ],
+            "summary": {
+                "content": "Cheers to the freaking weekend.",
+                "direction": "ltr"
+            },
+            "enclosure": [
+                {
+                    "type": "image/jpg",
+                    "href": "https://themomedit.com/wp-content/uploads/2024/07/nsale.jpg",
+                    "length": 238419
+                }
+            ],
+            "visual": {
+                "contentType": "image/jpg",
+                "url": "https://themomedit.com/wp-content/uploads/2024/07/nsale.jpg"
+            },
+            "canonicalUrl": "https://themomedit.com/nsale-excitement-weekend-style-picks/",
+            "unread": true,
+            "engagement": 11
+        },
+        "using": true
+    },
+    "dog": {
+        "topItem": {
+            "language": "en",
+            "fingerprint": "4223d816",
+            "keywords": [
+                "Puppies",
+                "cute puppies",
+                "cute puppy pics",
+                "exclude_from_yahoo"
+            ],
+            "originId": "https://dogtime.local.vip.gnmedia.net/?p=79773",
+            "id": "yPBAd0yllBNKncmyN5q/hiZwYoTJjCWToWG1w1LoJto=_190bc8c66c6:28a6c7:4a22acf2",
+            "origin": {
+                "streamId": "feed/http://dogtime.com/feed",
+                "title": "DogTime",
+                "htmlUrl": "https://dogtime.com/"
+            },
+            "crawled": 1721150236358,
+            "published": 1721150008000,
+            "title": "Jack Russell Terrier Puppy Pictures and Facts",
+            "author": "Zahrah Patel",
+            "content": {
+                "direction": "ltr",
+                "content": "<figure class=\"wp-block-post-featured-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2606-e1720453301531.jpeg?w=1024\" width=\"1024\" alt=\"Jack Russell Terrier puppy running in the grass.\" class=\"wp-post-image\" height=\"681\"><figcaption>(Photo Credit: Robert D. Barnes | Getty Images)</figcaption></figure>\n<p>If you’ve ever encountered a <a href=\"https://dogtime.com/dog-breeds/jack-russell-terrier\">Jack Russell Terrier</a>, you know that these small but mighty dogs are bursting with energy, intelligence, and an undeniable charm. Originating in England during the 19th century, this breed was initially developed for fox hunting, which explains their <a href=\"https://dogtime.com/dog-breeds/characteristics/predatory-tendencies\">strong prey drive</a> and boundless enthusiasm. However, Jack Russell Terriers are beloved family pets today, known for their playful personalities and keen minds. Let’s delve into some fascinating facts about the Jack Russell Terrier, along with the most adorable puppy pictures that will have you considering adding one of these spirited little canines to your family.</p>\n<h2 class=\"wp-block-heading\">Jack Russell Terrier puppies need to be trained from day one</h2>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2622-e1720532008481.jpeg?w=1024\" width=\"1200\" alt=\"Cute Jack Russell Terrier puppy at home.\" class=\"wp-image-158608\" height=\"795\"><figcaption class=\"wp-element-caption\">(Photo Credit: ucho103 | Getty Images)</figcaption></figure>\n<p>Jack Russell Terriers are so intelligent that they sometimes even outwit their humans. They were bred to outsmart foxes, so it makes sense. Combined with their high energy and natural hunting instinct, this can make for a very destructive puppy if they’re not properly trained. Training your Jack Russell Terrier works best with consistency and <a href=\"https://dogtime.com/reference/dog-training/111036-what-is-positive-reinforcement-training\">positive reinforcement</a>. JRT enthusiasts also point out that you must convey firmness and authority, as there will be times your pup tests that. </p>\n<p>Moreover, training your puppy will be easier if they are younger. That said, you can absolutely still train an older Jack Russell Terrier if you adopt one who is not a puppy.</p>\n<h2 class=\"wp-block-heading\">This small dog breed can catch some serious air</h2>\n<figure class=\"wp-block-image wp-image-79825\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2619-e1720532360871.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier jumping over the fence.\" class=\"wp-image-158611\" height=\"801\"><figcaption class=\"wp-element-caption\">(Photo Credit: alexei_tm | Getty Images)</figcaption></figure>\n<p>If you’re planning to adopt a JRT, be prepared for some high-flying antics. Jack Russell Terriers might be small, but they have springs for legs! These athletic dogs can leap up to five feet in the air, defying their size and gravity. A puppy won’t be able to reach such heights at an early age, but as they grow, so will their hops. This impressive jumping ability stems from their hunting roots, where they needed to jump over obstacles in pursuit of prey. </p>\n<p>Your Jack Russell Terrier will jump on furniture, over baby gates, and sometimes even out of your arms. Make sure your backyard fence is high enough because these tiny acrobats can clear surprisingly tall barriers. Once again, this is why training your puppy is so important; not only will you have a well-behaved dog, but you will have a safe one, as well. Of note, their love for jumping also makes them great at canine sports like agility courses. </p>\n<h2 class=\"wp-block-heading\">Jack Russell Terriers have a bit of a Napoleon Complex</h2>\n<figure class=\"wp-block-image wp-image-79821\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2618-e1720532300363.jpeg?w=1024\" width=\"1200\" alt=\"Two Jack Russell Terrier puppies playing.\" class=\"wp-image-158612\" height=\"801\"><figcaption class=\"wp-element-caption\">(Photo Credit: K_Thalhofer | Getty Images)</figcaption></figure>\n<p>Typically, Jack Russell Terriers can weigh up to 15 pounds, but they often act like they weigh 150. This small Terrier breed tends to have a big personality. It’s not unusual to see a Jack Russell puppy standing up to a much larger dog, completely unaware — or unbothered — by the size difference. Their confident and assertive demeanor makes them incredibly bold and adventurous, always ready to explore and take on new challenges. </p>\n<p>However, this can also make them a bit stubborn and headstrong. Your puppy might be prone to making a lot of noise — be it barking, whimpering, or growling. Sometimes, a JRT will even bark at their human if they feel they aren’t getting enough attention. Fortunately, you can keep their <a href=\"https://dogtime.com/dog-health/675-how-to-stop-dog-barking\">vocalizations in check</a> by teaching them appropriate times to bark and rewarding quiet behavior.</p>\n<h2 class=\"wp-block-heading\">These puppies like their space</h2>\n<figure class=\"wp-block-image wp-image-79831\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2615-e1720532108718.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier puppy sleeping with a soft toy.\" class=\"wp-image-158615\" height=\"800\"><figcaption class=\"wp-element-caption\">(Photo Credit: TatyanaGl | Getty Images)</figcaption></figure>\n<p>Like any breed, Jack Russell Terriers can be incredibly affectionate with their humans. These puppies love to be involved in family activities and can be quite the cuddle bugs when they’re not bouncing off the walls. However, unlike traditional family dogs like <a href=\"https://dogtime.com/dog-breeds/golden-retriever\">Golden Retrievers</a> and <a href=\"https://dogtime.com/dog-breeds/labrador-retriever\">Labrador Retrievers</a>, JRTs might not tolerate roughhousing from children. </p>\n<p>This doesn’t mean you can’t have a Jack Russell Terrier puppy and children in the same house. It does, however, mean it’s important to teach both children and adults in the home how to interact properly with the dog. Obedience training can also help curb any unwanted behaviors.</p>\n<h2 class=\"wp-block-heading\">A Jack Russell Terrier puppy can cost you a lot when you’re buying them for sale</h2>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2620-e1720532427934.jpeg?w=1024\" width=\"1200\" alt=\"Five newborn Jack Russell Terrier puppies with mom.\" class=\"wp-image-158610\" height=\"800\"><figcaption class=\"wp-element-caption\">(Photo Credit: namaki | Getty Images)</figcaption></figure>\n<p>If you’re considering buying a Jack Russell Terrier puppy for sale from a breeder, think wisely. These energetic and intelligent pups often cost between $800 to $2,000, depending on their pedigree and the <a href=\"https://dogtime.com/puppies/5-finding-a-good-breeder\">breeder’s reputation</a>. While purchasing from a breeder might seem appealing, it’s worth considering adoption as a more affordable and ethical option. </p>\n<p><a href=\"https://dogtime.com/advocacy/dog-adoption/108003-shelter-vs-rescue-where-should-you-adopt-your-next-dog\">Shelters and rescue organizations</a> are full of loving dogs in need of a forever home, and you might just find a Jack Russell Terrier or a mix who is perfect for your family. Plus, adopting can save you a significant amount of money while giving a deserving dog a second chance at a happy life.</p>\n<h2 class=\"wp-block-heading\">Jack Russell Terriers love to dig due to their hunting dog heritage</h2>\n<figure class=\"wp-block-image wp-image-79827\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2621-e1720532499949.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier digging in the sand at the beach.\" class=\"wp-image-158609\" height=\"755\"><figcaption class=\"wp-element-caption\">(Photo Credit: Gennadiy Kravchenko | Getty Images)</figcaption></figure>\n<p>A little warning: if you have a pristine garden, a Jack Russell Terrier puppy might see it as their new playground. These dogs have an innate love for digging due to their history as <a href=\"https://dogtime.com/lifestyle/110494-hunting-dog-breeds-best-sporting-dogs\">hunting dogs</a>. They were bred to burrow into foxholes, and that instinct is still strong. While this demonstrates their determined nature, it can be a bit of a nuisance for your flower beds.</p>\n<p>If you don’t have a yard, you’re not safe from the digging instinct either. Jack Russell Terriers will just as happily dig through your dirty laundry, the couch cushions, or the trash. If you do have a yard, consider installing fencing that extends underground by a foot or so. This can help keep your puppy safe and contained.</p>\n<p>You can also channel this digging behavior into designated areas or use it as an opportunity for bonding. Burying toys or treats for them to find can satisfy your puppy’s digging cravings without turning your yard into a moonscape.</p>\n<h2 class=\"wp-block-heading\">They are often confused with Russell and Parson Russell Terriers</h2>\n<figure class=\"wp-block-image wp-image-79833\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2616-e1720532182871.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier puppy outdoors.\" class=\"wp-image-158614\" height=\"800\"><figcaption class=\"wp-element-caption\">(Photo Credit: Wavetop | Getty Images)</figcaption></figure>\n<p>Many people may assume that the Jack Russell Terrier is the same breed of dog as the Russell Terrier. While they look very similar and come from an overlapping gene pool, there are actually slight differences between the two breeds.</p>\n<p>Not only that, <a href=\"https://dogtime.com/dog-breeds/parson-russell-terrier\">Parson Russell Terriers</a> are also often mistakenly called Jack Russell Terriers. They too share an ancestry with the JRT and the Russell Terrier, but again, there are <a rel=\"noopener\" href=\"https://www.petfriendlyhouse.com/the-difference-between-the-parson-jack-russell-and-russell-terriers/\" target=\"_blank\">subtle differences</a>.</p>\n<p>All three breeds originate from the same 19th century English breeder, Reverend John “Jack” Russell. The Jack Russell Terrier and the Parson Russell Terrier were once considered the same breed until two separate enthusiast groups began breeding them in slightly different manners in the late 20th century.</p>\n<p>So, how do you tell the three apart? Well, that can be challenging. In essence, the Parson Russell Terrier is bred more for appearance, while the JRT is bred for their original intent — athleticism. And while they all generally are the same color and size, Russell Terriers tend to be longer than they are tall.</p>\n<h2 class=\"wp-block-heading\">Jack Russell Terrier puppies can have three different coat types</h2>\n<figure class=\"wp-block-image wp-image-79829\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2617-e1720532241146.jpeg?w=1024\" width=\"1200\" alt=\"Three Jack Russell Terrier puppies in a basket.\" class=\"wp-image-158613\" height=\"800\"><figcaption class=\"wp-element-caption\">(Photo Credit: Eriklam | Getty Images)</figcaption></figure>\n<p>Interestingly, Jack Russell Terrier puppies can have one of three different coat types: smooth, broken, or rough. Smooth-coated puppies have short, sleek fur that lies close to their bodies, making them look polished and tidy. Rough-coated Jack Russells, on the other hand, sport longer, coarser hair that gives them a scruffy appearance. Broken-coated Jack Russell Terriers feature a mix of smooth and rough hair, with charming tufts around their face and body. Despite these differences in texture, all Jack Russell Terrier coats are double-layered, providing them with extra insulation and protection. </p>\n<p>The good news is that caring for their coat isn’t too strenuous. Broken-coated and rough-coated JRTs should have their coats stripped twice a year. This process helps remove dead hair and reduces the amount of shedding. It’s best done by a <a href=\"https://dogtime.com/reference/dog-grooming/75961-dog-grooming-yourself-vs-professional\">professional</a>.</p>\n<p>Smooth-coated JRTs should be brushed on a weekly basis. Regular bathing is also necessary, especially if your puppy sticks to their roots and enjoys digging in the yard — or has their own digging pit.</p>\n<figure class=\"wp-block-gallery wp-block-gallery-1 wp-block-gallery-is-layout-flex\">\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2629-e1720533497958.jpeg?w=1024\" width=\"1200\" alt=\"Cute Jack Russell Terrier puppy.\" data-id=\"158621\" class=\"wp-image-158621\" height=\"800\"></figure>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2630-e1720533446735.jpeg?w=1024\" width=\"1200\" alt=\"Two Jack Russell puppies playing with a toy outside.\" data-id=\"158620\" class=\"wp-image-158620\" height=\"800\"></figure>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2631-e1720533386936.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier puppy at home.\" data-id=\"158619\" class=\"wp-image-158619\" height=\"800\"></figure>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2628-e1720533547692.jpeg?w=1024\" width=\"1200\" alt=\"Newborn Jack Russell Terrier.\" data-id=\"158622\" class=\"wp-image-158622\" height=\"795\"></figure>\n<figure class=\"wp-block-image\"><img src=\"https://dogtime.com/wp-content/uploads/sites/12/2024/07/IMG_2632-e1720533334668.jpeg?w=1024\" width=\"1200\" alt=\"Jack Russell Terrier puppy with dad.\" data-id=\"158618\" class=\"wp-image-158618\" height=\"795\"></figure>\n</figure>\n<p>With their expressive faces and spunky attitudes, Jack Russell Terrier puppies are natural-born entertainers. Whether it’s performing tricks, making funny faces, or just being their quirky selves, they love to be the center of attention. This breed has even been <a href=\"https://dogtime.com/dogs-in-film-tv/75191-sad-dog-movies-make-you-cry-saddest-movie-dogs-death\">featured in movies</a> and TV shows because of their charismatic nature and trainability. Don’t be surprised if your puppy ends up becoming the star of your social media feed or the darling of your neighborhood. Their charming antics can easily win over just about anyone!</p>\n<p>The post <a href=\"https://dogtime.com/puppies/79773-jack-russell-terrier-puppies-pictures-facts\">Jack Russell Terrier Puppy Pictures and Facts</a> appeared first on <a href=\"https://dogtime.com\">DogTime</a>.</p>"
+            },
+            "alternate": [
+                {
+                    "href": "https://dogtime.com/puppies/79773-jack-russell-terrier-puppies-pictures-facts",
+                    "type": "text/html"
+                }
+            ],
+            "summary": {
+                "direction": "ltr",
+                "content": "<p>Are you thinking of bringing a Jack Russell Terrier puppy into your home or family? These smart, highly athletic pups are quite adorable, but there are some things you should know about Jack Russell Terrier puppies before you head over to your local rescue to adopt one.</p>\n<p>The post <a href=\"https://dogtime.com/puppies/79773-jack-russell-terrier-puppies-pictures-facts\">Jack Russell Terrier Puppy Pictures and Facts</a> appeared first on <a href=\"https://dogtime.com\">DogTime</a>.</p>"
+            },
+            "canonicalUrl": "https://dogtime.com/puppies/79773-jack-russell-terrier-puppies-pictures-facts",
+            "unread": true,
+            "engagement": 187,
+            "engagementRate": 1.12
+        },
+        "using": true
+    }
+}
+
 
 export default function WorkFlow() {
     //user searches from api their word - gets back feeds from feedly ...
@@ -1870,17 +2011,37 @@ export default function WorkFlow() {
     //make button that gets latest search terms - feedly
     type keywordTopic = {
         [key: string]: {
-            feedlyApiMoreInfoResponse: feedlyApiMoreInfoResponse,
-            using: boolean
-        }
+            topItem: feedlyMoreInfoApiItem,
+            content: string,
+            using: boolean,
+        },
+
     }
-    // const [keywordTopics, keywordTopicsSet] = useState<keywordTopic>(defaultObj)
+    // const [keywordTopics, keywordTopicsSet] = useState<keywordTopic>(defaultKeywords)
     const [keywordTopics, keywordTopicsSet] = useState<keywordTopic>({})
+
 
     type filterModeType = "score" | "estimatedEngagement"
     const [filterMode, filterModeSet] = useState<filterModeType>("estimatedEngagement")//filter by score, engagement, date, search term
 
     const [search, searchSet] = useState("")
+
+    function extractReadableTextFromHtml(html: string) {
+        // Create a DOM parser
+        const parser = new DOMParser();
+
+        // Parse the HTML string into a document
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Select all header elements (h1-h5)
+        const headers = doc.querySelectorAll('h1, h2, h3, h4, h5, p, b');
+
+        // Extract the text content from each header element
+        const headerTexts = Array.from(headers).map(header => header.textContent);
+
+        // Join the header texts with a newline character
+        return headerTexts.join('\n');
+    }
 
     return (
         <div className={styles.main}>
@@ -1914,14 +2075,36 @@ export default function WorkFlow() {
                     if (feedApiMoreInfo === undefined) return
                     toast.success("Loaded Article Content")
 
-                    //set for use viewing
+                    //handle keywordTopics
+                    const sortedItems = feedApiMoreInfo.items.sort((a, b) => (b.engagement ?? 0) - (a.engagement ?? 0))
+                    console.log(`$sortedItems`, sortedItems);
+
+                    const topItem = sortedItems[0]
+
+                    let content = ""
+
+                    if (topItem.content !== undefined) {
+                        content = extractReadableTextFromHtml(topItem.content.content)
+                    } else {
+                        const websiteBody = await getWebsiteBody(topItem.canonicalUrl)
+                        if (websiteBody === undefined) return
+
+                        content = websiteBody
+                    }
+
+                    toast.success("got article content")
+
+                    // //set for use viewing
                     keywordTopicsSet((prevActiveKeywordTopics) => {
+                        //sort best article in items
                         const newActiveKeywordTopics = { ...prevActiveKeywordTopics }
                         newActiveKeywordTopics[search] = {
-                            feedlyApiMoreInfoResponse: feedApiMoreInfo,
-                            using: false
+                            topItem: topItem,
+                            using: true,
+                            content: content
                         }
 
+                        console.log(`$newActiveKeywordTopics`, newActiveKeywordTopics);
                         return newActiveKeywordTopics
                     })
                 }}>Search Term on Feedly</button>
@@ -1941,29 +2124,49 @@ export default function WorkFlow() {
                 }}>Change</button>
             </div>
 
-            <div style={{ display: "grid", gap: "1rem" }}>
-                {Object.entries(keywordTopics).map(([key, value]) => {
-                    console.log(`$key`, key);
-                    console.log(`$activeKeywordTopics`, keywordTopics);
-                    return (
-                        <div key={key} style={{ display: "grid", gridAutoFlow: "column", gridAutoColumns: "min(600px, 90%)", overflowX: "auto", gap: "1rem", backgroundColor: "var(--color3)", padding: "1rem", }}>
-                            {value.feedlyApiMoreInfoResponse.items.map(eachItem => {
-                                return (
-                                    <div key={eachItem.id} style={{ whiteSpace: "break-spaces" }}>
-                                        <ShowMore label='Article Content:' wantsToShowAll={true} content={(
-                                            <div dangerouslySetInnerHTML={{ __html: eachItem.content.content }} />
-                                        )} />
+            <button onClick={async () => {
+                const textHtml = await getWebsiteBody("https://en.wikipedia.org/wiki/Bar_(river_morphology)")
+                // const textHtml = await getWebsiteBody("https://themomedit.com/nsale-excitement-weekend-style-picks/")
+                console.log(`$textHtml`, textHtml);
+            }}>test</button>
 
-                                        <ShowMore label='Summary:' wantsToShowAll={true} content={(
-                                            <div dangerouslySetInnerHTML={{ __html: eachItem.summary.content }} />
-                                        )} />
+            {Object.entries(keywordTopics).length > 0 && (
+                <>
+                    <h2>Top Keyword Articles</h2>
+
+                    <div className='snap' style={{ display: "flex", overflowX: "auto", gap: '1rem', alignContent: "flex-start" }}>
+                        {Object.entries(keywordTopics).map(([key, value]) => {
+                            return (
+                                <div key={key} style={{ flex: "0 0 auto", width: "min(400px, 90%)", display: "grid", alignContent: "flex-start", gridTemplateRows: "auto 1fr" }}>
+                                    <button style={{ backgroundColor: keywordTopics[key].using ? "orange" : "grey" }}
+                                        onClick={() => {
+                                            keywordTopicsSet(prevTopics => {
+                                                const newTopics = JSON.parse(JSON.stringify(prevTopics))
+                                                newTopics[key].using = !newTopics[key].using
+                                                return newTopics
+                                            })
+                                        }}
+                                    >{key}</button>
+
+                                    <div style={{ position: "relative", zIndex: 0, color: "#fff", padding: "1rem", display: "grid", alignContent: "flex-start", gap: "1rem" }}>
+                                        <Image alt={`${value.topItem.title} cover image`} src={defaultImageSrc} fill={true} style={{ objectFit: "cover", zIndex: -1 }} sizes='90vw' />
+
+                                        <div style={{ position: "absolute", top: 0, left: 0, bottom: 0, right: 0, backgroundColor: "rgba(0,0,0,0.6)", zIndex: -1 }}></div>
+
+                                        <h2>{value.topItem.title}</h2>
+
+                                        {value.topItem.summary !== undefined && (
+                                            <p dangerouslySetInnerHTML={{ __html: value.topItem.summary.content }} />
+                                        )}
                                     </div>
-                                )
-                            })}
-                        </div>
-                    )
-                })}
-            </div>
+                                </div>
+                            )
+                        })}
+                    </div>
+
+                    <h2>GPT customization</h2>
+                </>
+            )}
         </div>
     )
 }

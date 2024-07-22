@@ -54,3 +54,18 @@ svg {
   width: 1rem;
   aspect-ratio: 1/1;
 }
+
+
+
+
+
+
+
+
+.snap {
+  scroll-snap-type: x mandatory;
+}
+
+.snap>* {
+  scroll-snap-align: start;
+}

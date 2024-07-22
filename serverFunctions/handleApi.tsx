@@ -1,6 +1,7 @@
 "use server"
 
 import { feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
+import puppeteer from 'puppeteer';
 
 export async function getFeedApiBySearch(search: string): Promise<feedlyApiResponse | undefined> {
     try {
@@ -25,4 +26,30 @@ export async function getFeedApiMoreInfo(feedId: string): Promise<feedlyApiMoreI
         console.log(`$error getting more info`, error);
     }
 }
+
+
+
+export async function getWebsiteBody(url: string) {
+    try {
+        const browser = await puppeteer.launch();
+        const page = await browser.newPage();
+
+        await page.goto(url);
+
+        const textContent = await page.evaluate(() => {
+            const elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, b, li');
+
+            // @ts-ignore
+            return Array.from(elements).map(el => el.innerText).join('\n');
+        });
+
+        await browser.close();
+
+        return textContent;
+
+    } catch (error) {
+        console.log(`$error with getWebsiteBody`, error);
+    }
+}
+
 

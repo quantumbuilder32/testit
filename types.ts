@@ -88,14 +88,15 @@ export type feedlyMoreInfoApiItem = {
     originId: string;
     keywords: string[];
     origin: Origin;
-    content: Content;
+    content?: Content;
     title: string;
     crawled: number;
     published: number;
+    engagement?: number;
     author: string;
     alternate: Alternate[];
-    summary: Content;
-    visual: Visual;
+    summary?: Content;
+    visual?: Visual;
     canonicalUrl: string;
     unread: boolean;
 }
@@ -114,7 +115,7 @@ export type Origin = {
 export type Visual = {
     processor: string;
     contentType: string;
-    url: string;
+    url?: string;
     width: number;
     height: number;
 }
