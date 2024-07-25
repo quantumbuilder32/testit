@@ -54,11 +54,34 @@ export type feedlyApiResult = {
     coverUrl?: string;
 }//dont edit
 
+export type OpenAIResponse = {
+    id: string;
+    object: string;
+    created: number;
+    model: string;
+    choices: Choice[];
+    usage: Usage;
+}
 
+export type Choice = {
+    index: number;
+    text: string;
+    logprobs: Logprobs | null;
+    finish_reason: string;
+}
 
+export type Logprobs = {
+    tokens: string[];
+    token_logprobs: number[];
+    top_logprobs: { [token: string]: number }[];
+    text_offset: number[];
+}
 
-
-
+export type Usage = {
+    prompt_tokens: number;
+    completion_tokens: number;
+    total_tokens: number;
+}
 
 
 
@@ -119,3 +142,18 @@ export type Visual = {
     width: number;
     height: number;
 }
+
+
+
+
+
+
+
+
+
+
+export const keywordSchema = z.object({
+    name: z.string().min(1),
+})
+
+export type keyword = z.infer<typeof keywordSchema>

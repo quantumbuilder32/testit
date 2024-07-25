@@ -1,7 +1,8 @@
 "use server"
 
-import { feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
+import { OpenAIResponse, feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
 import puppeteer from 'puppeteer';
+require('dotenv').config()
 
 export async function getFeedApiBySearch(search: string): Promise<feedlyApiResponse | undefined> {
     try {
@@ -27,8 +28,6 @@ export async function getFeedApiMoreInfo(feedId: string): Promise<feedlyApiMoreI
     }
 }
 
-
-
 export async function getWebsiteBody(url: string) {
     try {
         const browser = await puppeteer.launch();
@@ -37,7 +36,7 @@ export async function getWebsiteBody(url: string) {
         await page.goto(url);
 
         const textContent = await page.evaluate(() => {
-            const elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, b, li');
+            const elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, b');
 
             // @ts-ignore
             return Array.from(elements).map(el => el.innerText).join('\n');
@@ -52,4 +51,33 @@ export async function getWebsiteBody(url: string) {
     }
 }
 
+
+export async function getGptVideoScript(prompt: string): Promise<OpenAIResponse | undefined> {
+    try {
+        const payload = {
+            model: "gpt-3.5-turbo-0125",
+            prompt: "respond with hi",
+            temperature: 0.7,
+            max_tokens: 2000,
+            n: 1,
+        };
+
+        const response = await fetch("https://api.openai.com/v1/completions", {
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
+            },
+            method: "POST",
+            body: JSON.stringify(payload),
+        });
+
+
+        const json = await response.json() as OpenAIResponse
+
+        return json
+
+    } catch (error) {
+        console.log(`$error receiving from gpt`, error);
+    }
+}
 
