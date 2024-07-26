@@ -11,7 +11,6 @@
     "db:studio": "drizzle-kit studio"
   },
   "dependencies": {
-    "dotenv": "^16.4.5",
     "drizzle-orm": "^0.32.0",
     "next": "14.2.5",
     "openai": "^4.0.0",
@@ -28,6 +27,7 @@
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "@types/uuid": "^10.0.0",
+    "dotenv": "^16.4.5",
     "drizzle-kit": "^0.23.0",
     "eslint": "^8",
     "eslint-config-next": "14.2.5",
