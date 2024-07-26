@@ -52,32 +52,4 @@ export async function getWebsiteBody(url: string) {
 }
 
 
-export async function getGptVideoScript(prompt: string): Promise<OpenAIResponse | undefined> {
-    try {
-        const payload = {
-            model: "gpt-3.5-turbo-0125",
-            prompt: "respond with hi",
-            temperature: 0.7,
-            max_tokens: 2000,
-            n: 1,
-        };
-
-        const response = await fetch("https://api.openai.com/v1/completions", {
-            headers: {
-                "Content-Type": "application/json",
-                Authorization: `Bearer ${process.env.OPENAI_API_KEY}`,
-            },
-            method: "POST",
-            body: JSON.stringify(payload),
-        });
-
-
-        const json = await response.json() as OpenAIResponse
-
-        return json
-
-    } catch (error) {
-        console.log(`$error receiving from gpt`, error);
-    }
-}
 

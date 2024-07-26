@@ -4,11 +4,23 @@
 
 :root {
   --color1: #ff7700;
-  --color2: #F4F7FC;
-  --color3: #0582f0;
+  --color2: aliceblue;
+  --color3: #cce7ff;
+  --gray1: #eee;
+  --gray2: #222;
+  --gray3: #a5a5a5;
 
+  /* --color1: #8ecae6;
+  --color2: #219ebc;
+  --color3: #023047; */
+  --color4: #ffb703;
+  --color5: #fb8500;
+
+  --largeFontSize: 1.3rem;
   --mediumFontSize: 1.3rem;
+  --regularFontSize: 1.3rem;
 
+  --mediumFontWeight: 700;
 }
 
 *,
@@ -38,15 +50,16 @@ textarea:focus {
 }
 
 
-button {
+.button {
   cursor: pointer;
   padding: .5rem 1rem;
-  background-color: aliceblue;
+  background-color: var(--color2);
   transition: background-color 400ms;
+  white-space: nowrap;
 }
 
-button:hover {
-  background-color: hsl(208, 100%, 90%);
+.button:hover {
+  background-color: var(--color3);
 }
 
 
@@ -60,6 +73,21 @@ svg {
 
 
 
+.settingsButton {
+  cursor: pointer;
+  padding: .5rem 1rem;
+  background-color: var(--gray1);
+  color: #000;
+  transition: background-color 400ms, color 400ms;
+  white-space: nowrap;
+}
+
+.settingsButton:hover,
+.settingsButtonActive,
+.settingsButton:focus {
+  background-color: var(--gray2);
+  color: #fff;
+}
 
 
 .snap {
@@ -68,4 +96,48 @@ svg {
 
 .snap>* {
   scroll-snap-align: start;
+}
+
+
+
+.tag {
+  cursor: pointer;
+  padding: .5rem 1rem;
+  background-color: var(--color4);
+  transition: filter 200ms;
+  white-space: nowrap;
+  color: #fff;
+  font-weight: var(--mediumFontWeight);
+  border-radius: 1rem;
+}
+
+.tag:hover {
+  filter: brightness(110%);
+}
+
+.tag svg {
+  fill: #fff;
+}
+
+.showOnHoverParent>.showOnHoverChild {
+  opacity: 0;
+  transition: opacity 400ms;
+}
+
+.showOnHoverParent:hover>.showOnHoverChild {
+  opacity: 1;
+}
+
+
+*::-webkit-scrollbar {
+  width: 0.25rem;
+  height: 0.25rem;
+}
+
+*::-webkit-scrollbar-track {
+  background-color: var(--gray1);
+}
+
+*::-webkit-scrollbar-thumb {
+  background-color: var(--gray3);
 }

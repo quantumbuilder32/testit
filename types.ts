@@ -54,15 +54,6 @@ export type feedlyApiResult = {
     coverUrl?: string;
 }//dont edit
 
-export type OpenAIResponse = {
-    id: string;
-    object: string;
-    created: number;
-    model: string;
-    choices: Choice[];
-    usage: Usage;
-}
-
 export type Choice = {
     index: number;
     text: string;
@@ -157,3 +148,7 @@ export const keywordSchema = z.object({
 })
 
 export type keyword = z.infer<typeof keywordSchema>
+
+
+export const systems: system[] = ["script", "audible", "ebook"]
+export type system = "script" | "audible" | "ebook"

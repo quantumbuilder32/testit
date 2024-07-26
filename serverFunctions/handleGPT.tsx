@@ -1,7 +1,7 @@
 "use server"
 import OpenAI from "openai"
 
-import { keyword, keywordSchema } from "@/types";
+import { keyword, keywordSchema, system } from "@/types";
 require('dotenv').config()
 
 const openai = new OpenAI({
@@ -12,13 +12,11 @@ const getTopTrendsPrompt =
     `
 you are an award winning trend specialist system. Please search the web - social media, articles rss feeds, google trends and anything you think is best to get top trendy keywords for today that people would want to talk about. 2 total.
 
-please give me back the data in an JSON array
+please give me back the data as a string separated by commas
 
-e.g 
-[{"name":"ai"},{"name":"tech"}]
+e.g ai, tech
 
-
-really important the data I receive is in an array like this. Don't give any other conversational response, or explanation, just the array
+really important the data I receive is like the example. Don't give any other conversational response, or explanation, just the string with topics separated by comma
 `
 
 
@@ -37,12 +35,13 @@ export async function getTopKeywords(): Promise<keyword[] | undefined> {
         })
 
         const textResponse = response.choices[0].message.content
-        if (textResponse === null) throw new Error("no text")
+        if (textResponse === null) return
 
-        const keywords: keyword[] = JSON.parse(textResponse)
-
-        keywords.forEach(eachKeyWord => {
-            keywordSchema.parse(eachKeyWord)
+        const keywords: keyword[] = textResponse.split(",").map(eachString => {
+            const keyWord: keyword = {
+                name: eachString
+            }
+            return keyWord
         })
 
         return keywords
@@ -51,3 +50,21 @@ export async function getTopKeywords(): Promise<keyword[] | undefined> {
     }
 }
 
+export async function getGptVideoScript(prompt: string): Promise<string | undefined> {
+    const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+            {
+                role: "user",
+                content: prompt
+            }
+        ],
+        temperature: 1,
+        //1750 tokens, 7000 characters per average script - 1 token = 4 characters
+    })
+
+    const textResponse = response.choices[0].message.content
+    if (textResponse === null) return
+
+    return textResponse
+}
