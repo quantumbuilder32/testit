@@ -9,6 +9,8 @@ const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 })
 
+console.log(`$ process.env.OPENAI_API_KEY`, process.env.OPENAI_API_KEY);
+
 const getTopTrendsPrompt =
     `
 you are an award winning trend specialist system. Please search the web - social media, articles rss feeds, google trends and anything you think is best to get top trendy keywords for today that people would want to talk about. 2 total.
