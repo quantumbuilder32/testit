@@ -58,11 +58,9 @@ export default function ScriptContent({ trendingKeywords, ...elProps }: { trendi
     const textAreaRef = useRef<HTMLTextAreaElement | null>(null)
 
     const [scriptLoading, scriptLoadingSet] = useState(false)
+
     // const [script, scriptSet] = useState(lastScript)
     const [script, scriptSet] = useState("")
-    //update full prompt trendingkeywords
-
-
 
     return (
         <div {...elProps} style={{ padding: "1rem", ...elProps?.style }}>

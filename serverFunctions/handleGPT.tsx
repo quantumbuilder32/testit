@@ -47,10 +47,6 @@ export async function getTopKeywords(): Promise<keyword[]> {
     return keywords
 }
 
-export async function getAPIKey() {
-    return apiKey
-}
-
 export async function getGptVideoScript(prompt: string): Promise<string | undefined> {
     const response = await openai.chat.completions.create({
         model: "gpt-4o",

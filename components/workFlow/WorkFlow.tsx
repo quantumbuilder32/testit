@@ -6,7 +6,6 @@ import styles from "./styles.module.css"
 import ScriptContent from '../scriptContent/ScriptContent'
 import AudibleContent from '../audibleContent/AudibleContent'
 import EBookContent from '../ebookContent/EBookContent'
-import { getAPIKey } from '@/serverFunctions/handleGPT'
 
 // const defaultTrendingKeywords = [
 //     {
@@ -46,11 +45,6 @@ export default function WorkFlow() {
                     <EBookContent style={{ display: currentSystem === "ebook" ? "grid" : "none" }} />
                 </div>
             </div>
-
-            <button onClick={async () => {
-                const rkdsd = await getAPIKey()
-                console.log(`$rkdsd`, rkdsd);
-            }}>check</button>
         </div>
     )
 }

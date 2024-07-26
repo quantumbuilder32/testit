@@ -33,7 +33,7 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
                 return keyWord
             })
 
-            toast.error("couldn't fetch, using example keywords")
+            toast.error("using example keywords")
 
             trendingKeywordsSet(prevKeywords => {
                 const newKeywords = [...prevKeywords, ...backupKeywords]
