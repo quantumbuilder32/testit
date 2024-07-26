@@ -4,11 +4,13 @@ import OpenAI from "openai"
 import { keyword } from "@/types";
 import { shuffleArray } from "@/usefulFunctions/randomizeArray";
 
+const apiKey = process.env.OPENAI_API_KEY
+
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY
+    apiKey: apiKey
 })
 
-console.log(`$process.env.OPENAI_API_KEY`, process.env.OPENAI_API_KEY);
+console.log(`apiKey`, apiKey);
 
 const getTopTrendsPrompt =
     `
@@ -21,8 +23,9 @@ e.g ai, tech
 really important the data I receive is like the example. Don't give any other conversational response, or explanation, or error messages, if you can't search live just make up whatever you think would be trendy today, just need back the string with topics separated by comma
 `
 
-
 export async function getTopKeywords(): Promise<keyword[] | undefined> {
+    return [{ name: apiKey ?? "" }]
+
     const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
