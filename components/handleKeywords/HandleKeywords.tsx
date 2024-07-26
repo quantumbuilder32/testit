@@ -1,8 +1,8 @@
 "use client"
 import React, { useState } from 'react'
-import { keyword, keywordSchema } from '@/types';
+import { keyword } from '@/types';
 import styles from "./styles.module.css"
-import { getAPIKey, getTopKeywords } from '@/serverFunctions/handleGPT';
+import { getTopKeywords } from '@/serverFunctions/handleGPT';
 import { toast } from 'react-hot-toast';
 import { shuffleArray } from '@/usefulFunctions/randomizeArray';
 
@@ -72,10 +72,6 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
                     >Add Keyword</button>
                 </div>
             </div>
-
-            <button onClick={async () => {
-                console.log(`$key`, await getAPIKey());
-            }}>check</button>
 
             {trendingKeywords.length > 0 && (
                 <div style={{ display: "flex", gap: ".5rem", alignItems: "center", marginTop: "1rem", overflowX: "auto" }}>
