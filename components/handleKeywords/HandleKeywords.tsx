@@ -3,25 +3,32 @@ import React, { useState } from 'react'
 import { keyword, keywordSchema } from '@/types';
 import styles from "./styles.module.css"
 import { getTopKeywords } from '@/serverFunctions/handleGPT';
+import { toast } from 'react-hot-toast';
 
 
 export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }: { trendingKeywords: keyword[], trendingKeywordsSet: React.Dispatch<React.SetStateAction<keyword[]>> }) {
     const [search, searchSet] = useState("")
 
     async function handleGetTopKeywords() {
-        //get top trends from chat gpt
-        const topKeywords = await getTopKeywords()
-        if (topKeywords === undefined) return
+        try {
+            //get top trends from chat gpt
+            const topKeywords = await getTopKeywords()
+            if (topKeywords === undefined) return
 
-        (topKeywords.forEach(eachKeyword => {
-            keywordSchema.parse(eachKeyword)
-        }))
+            (topKeywords.forEach(eachKeyword => {
+                keywordSchema.parse(eachKeyword)
+            }))
 
-        trendingKeywordsSet(prevKeywords => {
-            const newKeywords = [...prevKeywords, ...topKeywords]
+            trendingKeywordsSet(prevKeywords => {
+                const newKeywords = [...prevKeywords, ...topKeywords]
 
-            return newKeywords
-        })
+                return newKeywords
+            })
+
+        } catch (error) {
+            toast.error("error getting keywords")
+            console.log(`$error handleGetTopKeywords`, error);
+        }
     }
 
     return (

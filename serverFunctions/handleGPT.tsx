@@ -24,40 +24,36 @@ really important the data I receive is like the example. Don't give any other co
 
 
 export async function getTopKeywords(): Promise<keyword[] | undefined> {
-    try {
-        const response = await openai.chat.completions.create({
-            model: "gpt-4o",
-            messages: [
-                {
-                    role: "user",
-                    content: getTopTrendsPrompt
-                }
-            ],
-            temperature: .7,
-            max_tokens: 2000
-        })
-
-        let textResponse = response.choices[0].message.content
-        if (textResponse === null) return
-
-        if (textResponse.includes("sorry")) {
-            let optionsStrArr = ["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"]
-            optionsStrArr = shuffleArray(optionsStrArr)
-            textResponse = `${optionsStrArr[0]}, ${optionsStrArr[1]}`
-            console.log(`$used backup trends`);
-        }
-
-        const keywords: keyword[] = textResponse.split(",").map(eachString => {
-            const keyWord: keyword = {
-                name: eachString
+    const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [
+            {
+                role: "user",
+                content: getTopTrendsPrompt
             }
-            return keyWord
-        })
+        ],
+        temperature: .7,
+        max_tokens: 2000
+    })
 
-        return keywords
-    } catch (error) {
-        console.log(`$error getTopKeywords`, error);
+    let textResponse = response.choices[0].message.content
+    if (textResponse === null) return
+
+    if (textResponse.includes("sorry")) {
+        let optionsStrArr = ["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"]
+        optionsStrArr = shuffleArray(optionsStrArr)
+        textResponse = `${optionsStrArr[0]}, ${optionsStrArr[1]}`
+        console.log(`$used backup trends`);
     }
+
+    const keywords: keyword[] = textResponse.split(",").map(eachString => {
+        const keyWord: keyword = {
+            name: eachString
+        }
+        return keyWord
+    })
+
+    return keywords
 }
 
 export async function getGptVideoScript(prompt: string): Promise<string | undefined> {
