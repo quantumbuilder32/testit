@@ -7,18 +7,18 @@ import ScriptContent from '../scriptContent/ScriptContent'
 import AudibleContent from '../audibleContent/AudibleContent'
 import EBookContent from '../ebookContent/EBookContent'
 
-const defaultTrendingKeywords = [
-    {
-        "name": "Taylor Swift"
-    },
-    {
-        "name": " Bitcoin"
-    }
-]
+// const defaultTrendingKeywords = [
+//     {
+//         "name": "Taylor Swift"
+//     },
+//     {
+//         "name": " Bitcoin"
+//     }
+// ]
 
 export default function WorkFlow() {
-    const [trendingKeywords, trendingKeywordsSet] = useState<keyword[]>([...defaultTrendingKeywords])
-    // const [trendingKeywords, trendingKeywordsSet] = useState<keyword[]>([])
+    // const [trendingKeywords, trendingKeywordsSet] = useState<keyword[]>([...defaultTrendingKeywords])
+    const [trendingKeywords, trendingKeywordsSet] = useState<keyword[]>([])
 
     const [currentSystem, currentSystemSet] = useState<system>("script")
 
@@ -30,7 +30,6 @@ export default function WorkFlow() {
                 <div style={{ display: "flex", overflowX: "auto" }}>
                     {systems.map((eachSystem, eachSystemIndex) => {
                         return (
-
                             <button key={eachSystemIndex} className={eachSystem === currentSystem ? "settingsButton settingsButtonActive" : "settingsButton"} style={{}}
                                 onClick={() => {
                                     currentSystemSet(eachSystem)
