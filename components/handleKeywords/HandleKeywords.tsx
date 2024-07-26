@@ -54,9 +54,8 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
                 </div>
             </div>
 
-
             {trendingKeywords.length > 0 && (
-                <div style={{ display: "flex", gap: ".5rem", alignItems: "center", marginTop: "1rem" }}>
+                <div style={{ display: "flex", gap: ".5rem", alignItems: "center", marginTop: "1rem", overflowX: "auto" }}>
                     {trendingKeywords.map((eachKeyWord, eachKeyWordIndex) => {
                         return (
                             <p className={`showOnHoverParent tag`} key={eachKeyWordIndex} style={{ position: "relative" }}>
