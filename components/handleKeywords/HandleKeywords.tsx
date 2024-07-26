@@ -4,6 +4,7 @@ import { keyword, keywordSchema } from '@/types';
 import styles from "./styles.module.css"
 import { getTopKeywords } from '@/serverFunctions/handleGPT';
 import { toast } from 'react-hot-toast';
+import { shuffleArray } from '@/usefulFunctions/randomizeArray';
 
 
 export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }: { trendingKeywords: keyword[], trendingKeywordsSet: React.Dispatch<React.SetStateAction<keyword[]>> }) {
@@ -13,7 +14,29 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
         try {
             //get top trends from chat gpt
             const topKeywords = await getTopKeywords()
-            if (topKeywords === undefined) return
+            if (topKeywords === undefined) {
+                {
+                    const optionsStrArr = shuffleArray(["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"])
+                    const textResponse = `${optionsStrArr[0]}, ${optionsStrArr[1]}`
+                    console.log(`$used backup trends`);
+                    const backupKeywords: keyword[] = textResponse.split(",").map(eachString => {
+                        const keyWord: keyword = {
+                            name: eachString
+                        }
+                        return keyWord
+                    })
+
+                    trendingKeywordsSet(prevKeywords => {
+                        const newKeywords = [...prevKeywords, ...backupKeywords]
+
+                        return newKeywords
+                    })
+
+                    toast.error("couldn't fetch, using example keywords")
+                }
+
+                return
+            }
 
             (topKeywords.forEach(eachKeyword => {
                 keywordSchema.parse(eachKeyword)

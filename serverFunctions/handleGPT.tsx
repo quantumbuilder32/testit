@@ -10,8 +10,6 @@ const openai = new OpenAI({
     apiKey: apiKey
 })
 
-console.log(`apiKey`, apiKey);
-
 const getTopTrendsPrompt =
     `
 you are an award winning trend specialist system. Please search the web - social media, articles rss feeds, google trends and anything you think is best to get top trendy keywords for today that people would want to talk about. 2 total.
@@ -24,8 +22,6 @@ really important the data I receive is like the example. Don't give any other co
 `
 
 export async function getTopKeywords(): Promise<keyword[] | undefined> {
-    return [{ name: apiKey ?? "" }]
-
     const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
@@ -41,12 +37,7 @@ export async function getTopKeywords(): Promise<keyword[] | undefined> {
     let textResponse = response.choices[0].message.content
     if (textResponse === null) return
 
-    if (textResponse.includes("sorry")) {
-        let optionsStrArr = ["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"]
-        optionsStrArr = shuffleArray(optionsStrArr)
-        textResponse = `${optionsStrArr[0]}, ${optionsStrArr[1]}`
-        console.log(`$used backup trends`);
-    }
+    if (textResponse.includes("sorry")) return
 
     const keywords: keyword[] = textResponse.split(",").map(eachString => {
         const keyWord: keyword = {
