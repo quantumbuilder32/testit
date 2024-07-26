@@ -1,15 +1,14 @@
 "use server"
 import OpenAI from "openai"
 
-import { keyword, keywordSchema, system } from "@/types";
+import { keyword } from "@/types";
 import { shuffleArray } from "@/usefulFunctions/randomizeArray";
-require('dotenv').config()
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY
 })
 
-console.log(`$ process.env.OPENAI_API_KEY`, process.env.OPENAI_API_KEY);
+console.log(`$process.env.OPENAI_API_KEY`, process.env.OPENAI_API_KEY);
 
 const getTopTrendsPrompt =
     `
