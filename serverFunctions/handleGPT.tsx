@@ -21,7 +21,7 @@ e.g ai, tech
 really important the data I receive is like the example. Don't give any other conversational response, or explanation, or error messages, if you can't search live just make up whatever you think would be trendy today, just need back the string with topics separated by comma
 `
 
-export async function getTopKeywords(): Promise<keyword[] | undefined> {
+export async function getTopKeywords(): Promise<keyword[]> {
     const response = await openai.chat.completions.create({
         model: "gpt-4o",
         messages: [
@@ -35,9 +35,9 @@ export async function getTopKeywords(): Promise<keyword[] | undefined> {
     })
 
     let textResponse = response.choices[0].message.content
-    if (textResponse === null) return
+    if (textResponse === null) throw new Error("no text response from gpt")
 
-    if (textResponse.includes("sorry")) return
+    if (textResponse.includes("sorry")) throw new Error("gpt didnt give proper response")
 
     const keywords: keyword[] = textResponse.split(",").map(eachString => {
         const keyWord: keyword = {
@@ -47,6 +47,10 @@ export async function getTopKeywords(): Promise<keyword[] | undefined> {
     })
 
     return keywords
+}
+
+export async function getAPIKey() {
+    return apiKey
 }
 
 export async function getGptVideoScript(prompt: string): Promise<string | undefined> {

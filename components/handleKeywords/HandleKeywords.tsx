@@ -2,7 +2,7 @@
 import React, { useState } from 'react'
 import { keyword, keywordSchema } from '@/types';
 import styles from "./styles.module.css"
-import { getTopKeywords } from '@/serverFunctions/handleGPT';
+import { getAPIKey, getTopKeywords } from '@/serverFunctions/handleGPT';
 import { toast } from 'react-hot-toast';
 import { shuffleArray } from '@/usefulFunctions/randomizeArray';
 
@@ -14,33 +14,6 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
         try {
             //get top trends from chat gpt
             const topKeywords = await getTopKeywords()
-            if (topKeywords === undefined) {
-                {
-                    const optionsStrArr = shuffleArray(["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"])
-                    const textResponse = `${optionsStrArr[0]}, ${optionsStrArr[1]}`
-                    console.log(`$used backup trends`);
-                    const backupKeywords: keyword[] = textResponse.split(",").map(eachString => {
-                        const keyWord: keyword = {
-                            name: eachString
-                        }
-                        return keyWord
-                    })
-
-                    trendingKeywordsSet(prevKeywords => {
-                        const newKeywords = [...prevKeywords, ...backupKeywords]
-
-                        return newKeywords
-                    })
-
-                    toast.error("couldn't fetch, using example keywords")
-                }
-
-                return
-            }
-
-            (topKeywords.forEach(eachKeyword => {
-                keywordSchema.parse(eachKeyword)
-            }))
 
             trendingKeywordsSet(prevKeywords => {
                 const newKeywords = [...prevKeywords, ...topKeywords]
@@ -51,6 +24,22 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
         } catch (error) {
             toast.error("error getting keywords")
             console.log(`$error handleGetTopKeywords`, error);
+
+            const optionsStrArr = shuffleArray(["AI", "cryptocurrency", "blockchain", "climate change", "remote work", "Web3", "metaverse", "NFTs", "machine learning", "cybersecurity", "5G", "quantum computing", "virtual reality", "augmented reality", "electric vehicles", "renewable energy", "biotech", "fintech", "data science", "cloud computing", "automation", "IoT", "big data", "e-commerce", "digital transformation", "smart cities", "healthtech", "edge computing", "robotics", "social media trends", "telemedicine", "green technology", "space exploration", "AI ethics", "genomics", "digital marketing", "sustainable fashion", "cyber threats", "AR/VR gaming", "self-driving cars", "smart home technology", "quantum internet", "3D printing", "personalized medicine", "biodegradable materials", "sustainable agriculture", "VR education", "carbon capture", "AI in healthcare"])
+            const backupKeywords: keyword[] = `${optionsStrArr[0]}, ${optionsStrArr[1]}`.split(",").map(eachString => {
+                const keyWord: keyword = {
+                    name: eachString
+                }
+                return keyWord
+            })
+
+            toast.error("couldn't fetch, using example keywords")
+
+            trendingKeywordsSet(prevKeywords => {
+                const newKeywords = [...prevKeywords, ...backupKeywords]
+
+                return newKeywords
+            })
         }
     }
 
@@ -83,6 +72,10 @@ export default function HandleKeywords({ trendingKeywords, trendingKeywordsSet }
                     >Add Keyword</button>
                 </div>
             </div>
+
+            <button onClick={async () => {
+                console.log(`$key`, await getAPIKey());
+            }}>check</button>
 
             {trendingKeywords.length > 0 && (
                 <div style={{ display: "flex", gap: ".5rem", alignItems: "center", marginTop: "1rem", overflowX: "auto" }}>
