@@ -1,6 +1,6 @@
 "use server"
 
-import { OpenAIResponse, feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
+import { feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
 import puppeteer from 'puppeteer';
 require('dotenv').config()
 
