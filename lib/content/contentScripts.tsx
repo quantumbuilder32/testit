@@ -18,3 +18,13 @@ Keep the content authentic and relatable, focusing on real-life applications of 
     audible: "",
     ebook: "",
 }
+
+
+// Using the provided topics {{topicsToReplace}}, search for the latest and most relevant content across top sites like YouTube, LinkedIn, Reddit, X.com, and other significant platforms. Conduct a deep dive to identify trending discussions, key points, and popular opinions under each topic. Merge these topics into a unified narrative that ties the different subjects together in a meaningful way. Based on this information, craft a 30-second video script optimized for virality. The script should include:
+
+// Attention-Grabbing Introduction: Start with a hook that integrates elements from the different topics, presenting them in a way that highlights their interconnections or contrasts. Use a compelling statistic, surprising fact, or provocative question to capture attention.
+// Engaging Main Content: Seamlessly weave the key points and insights from each topic into a cohesive story. Use storytelling techniques to illustrate how these topics relate to one another or impact a broader issue. Ensure the narrative is engaging and easy to follow.
+// Call to Action and Viewer Engagement: End with a compelling call to action and a question for the viewer, encouraging them to engage with the content. For example, ask them to share their thoughts on the connections between the topics or to answer a relevant question in the comments.
+// Visual and Audio Cues: Provide detailed suggestions for images, footage, graphics, and sound elements that support the unified narrative and enhance viewer engagement.
+// Voiceover Instructions: Specify the tone, pace, and style to match the integrated content's mood and target audience (e.g., insightful, thought-provoking, friendly).
+// The script should be concise, well-structured, and formatted for direct input into InVideo. The goal is to create a compelling video that not only informs but also captivates and encourages interaction, leveraging the interconnected nature of the topics and current trends.
