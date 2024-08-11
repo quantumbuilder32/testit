@@ -81,7 +81,7 @@ export default function ScriptContent({ trendingKeywords, ...elProps }: { trendi
         <div {...elProps} style={{ padding: "1rem", ...elProps?.style }}>
             <ShowMore label='Edit Prompt'
                 content={
-                    <textarea ref={textAreaRef} value={fullPrompt} placeholder='enter prompt to create script' style={{ width: "100%", backgroundColor: "var(--color2)" }}
+                    <textarea ref={textAreaRef} value={fullPrompt} placeholder='enter prompt to create script' style={{ width: "100%", backgroundColor: "var(--color1)" }}
                         onChange={(e) => {
                             if (textAreaRef.current === null) return
 
@@ -97,7 +97,13 @@ export default function ScriptContent({ trendingKeywords, ...elProps }: { trendi
             <button className='button' style={{ justifySelf: "center" }}
                 onClick={async () => {
                     try {
-                        const finalPrompt = fullPrompt.replace("{{topicsToReplace}}", trendingKeywords.map(eachKeyword => eachKeyword.name).join(","))
+                        let combinedTopicString = ""
+
+                        trendingKeywords.forEach(eachKeyword => {
+                            combinedTopicString += `topic: ${eachKeyword.topic} \n summary: ${eachKeyword.summary}\n\n`
+                        })
+
+                        const finalPrompt = fullPrompt.replace("{{topicsToReplace}}", combinedTopicString)
 
                         console.log(`$finalPrompt`, finalPrompt);
                         console.log(`$calculateTokens`, calculateTokens(finalPrompt));
@@ -120,7 +126,7 @@ export default function ScriptContent({ trendingKeywords, ...elProps }: { trendi
             )}
 
             {script !== "" && (
-                <div style={{ padding: "1rem", whiteSpace: "pre-wrap", display: "grid", border: "", marginTop: "1rem", backgroundColor: "var(--color2)" }}>
+                <div style={{ padding: "1rem", whiteSpace: "pre-wrap", display: "grid", border: "", marginTop: "1rem", backgroundColor: "var(--color1)" }}>
                     <button className='settingsButton' style={{ justifySelf: "flex-end" }}
                         onClick={() => {
                             navigator.clipboard.writeText(script);
