@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 :root {
-  --color1: #ff7700;
-  --color2: aliceblue;
-  --color3: #cce7ff;
+  --color1: #eaf5fa;
+  --color2: #219ebc;
+  --color3: #023047;
+  --color4: #ffb703;
+  --color5: #fb8500;
+  --backgroundColor: #00171f;
+
   --gray1: #eee;
   --gray2: #222;
   --gray3: #a5a5a5;
@@ -29,6 +33,10 @@
   /* border: 1px solid red !important; */
 }
 
+h2 {
+  font-weight: bold;
+  text-transform: capitalize;
+}
 
 label {
   font-size: var(--mediumFontSize);
@@ -38,7 +46,7 @@ label {
 input,
 textarea {
   padding: 1rem;
-  background-color: var(--color2);
+  background-color: var(--color1);
   border-radius: .2rem;
   border: 1px solid #ddd;
 }
@@ -53,13 +61,15 @@ textarea:focus {
 .button {
   cursor: pointer;
   padding: .5rem 1rem;
-  background-color: var(--color2);
+  background-color: var(--color4);
+  color: #fff;
+  font-weight: bold;
   transition: background-color 400ms;
   white-space: nowrap;
 }
 
 .button:hover {
-  background-color: var(--color3);
+  background-color: var(--color5);
 }
 
 

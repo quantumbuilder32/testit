@@ -144,11 +144,20 @@ export type Visual = {
 
 
 export const keywordSchema = z.object({
-    name: z.string().min(1),
+    topic: z.string().min(1),
+    summary: z.string().min(1),
+    references: z.array(z.string()),
 })
 
 export type keyword = z.infer<typeof keywordSchema>
 
 
-export const systems: system[] = ["script", "audible", "ebook"]
-export type system = "script" | "audible" | "ebook"
+// export const keywordSchema = z.object({
+//     name: z.string().min(1),
+// })
+
+// export type keyword = z.infer<typeof keywordSchema>
+
+
+export const systems: system[] = ["script", "ebook", "audible"]
+export type system = "script" | "ebook" | "audible"
