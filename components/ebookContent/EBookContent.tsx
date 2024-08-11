@@ -1,5 +1,5 @@
 "use client"
-import { makeEpub } from '@/serverFunctions/handleEpub'
+// import { makeEpub } from '@/serverFunctions/handleEpub'
 import React from 'react'
 
 //custom prompt from gpt to get back title, each page text
@@ -12,18 +12,21 @@ import React from 'react'
 //epub can be downloaded
 
 export default function EBookContent({ ...elProps }: {} & React.HTMLAttributes<HTMLDivElement>) {
-    return (
-        <div {...elProps} style={{ ...elProps?.style }}>
-            <button onClick={async () => {
-                try {
-                    const result = await makeEpub()
-                    console.log("Ebook Generated Successfully!");
-                    console.log(`$result`, result);
 
-                } catch (error) {
-                    console.error("Failed to generate Ebook because of ", error);
-                }
-            }}></button>
-        </div>
-    )
+    return null
+
+    // return (
+    //     <div {...elProps} style={{ ...elProps?.style }}>
+    //         <button onClick={async () => {
+    //             try {
+    //                 const result = await makeEpub()
+    //                 console.log("Ebook Generated Successfully!");
+    //                 console.log(`$result`, result);
+
+    //             } catch (error) {
+    //                 console.error("Failed to generate Ebook because of ", error);
+    //             }
+    //         }}></button>
+    //     </div>
+    // )
 }

@@ -49,7 +49,6 @@ const getTopTrendFromSpecificTopicPrompt = (specificTopic: string) => {
     `
 }
 
-
 export async function getTopKeywords(specificTopic?: string): Promise<keyword[]> {
     const response = await openaiPerplexity.chat.completions.create({
         model: "llama-3.1-sonar-large-128k-online",
