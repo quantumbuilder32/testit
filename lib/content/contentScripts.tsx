@@ -12,7 +12,7 @@ export const contentPromptsStarter: { [key in system]: string } = {
     // Voiceover Instructions: Specify the tone, pace, and style to match the integrated content's mood and target audience (e.g., insightful, thought-provoking, friendly).
     // The script should be concise, well-structured, and formatted for direct input into InVideo. The goal is to create a compelling video that not only informs but also captivates and encourages interaction, leveraging the interconnected nature of the topics and current trends.`,
     audible: "",
-    ebook: "",
+    ebook: "make an incredible course based on this topic {{topic}}, this will be formatted in an ebook by me, so each heading should be contained in ** (e.g **Heading 1**)",
 }
 
 //old script
