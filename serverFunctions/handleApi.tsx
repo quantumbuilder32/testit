@@ -1,7 +1,6 @@
 "use server"
 
 import { feedlyApiMoreInfoResponse, feedlyApiResponse } from "@/types";
-import puppeteer from 'puppeteer';
 require('dotenv').config()
 
 export async function getFeedApiBySearch(search: string): Promise<feedlyApiResponse | undefined> {
@@ -28,28 +27,28 @@ export async function getFeedApiMoreInfo(feedId: string): Promise<feedlyApiMoreI
     }
 }
 
-export async function getWebsiteBody(url: string) {
-    try {
-        const browser = await puppeteer.launch();
-        const page = await browser.newPage();
+// export async function getWebsiteBody(url: string) {
+//     try {
+//         const browser = await puppeteer.launch();
+//         const page = await browser.newPage();
 
-        await page.goto(url);
+//         await page.goto(url);
 
-        const textContent = await page.evaluate(() => {
-            const elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, b');
+//         const textContent = await page.evaluate(() => {
+//             const elements = document.querySelectorAll('h1, h2, h3, h4, h5, p, b');
 
-            // @ts-ignore
-            return Array.from(elements).map(el => el.innerText).join('\n');
-        });
+//             // @ts-ignore
+//             return Array.from(elements).map(el => el.innerText).join('\n');
+//         });
 
-        await browser.close();
+//         await browser.close();
 
-        return textContent;
+//         return textContent;
 
-    } catch (error) {
-        console.log(`$error with getWebsiteBody`, error);
-    }
-}
+//     } catch (error) {
+//         console.log(`$error with getWebsiteBody`, error);
+//     }
+// }
 
 
 
