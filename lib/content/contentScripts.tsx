@@ -10,10 +10,15 @@ export const contentPromptsStarter: { [key in system]: string } = {
     // Call to Action and Viewer Engagement: End with a compelling call to action and a question for the viewer, encouraging them to engage with the content. For example, ask them to share their thoughts on the connections between the topics or to answer a relevant question in the comments.
     // Visual and Audio Cues: Provide detailed suggestions for images, footage, graphics, and sound elements that support the unified narrative and enhance viewer engagement.
     // Voiceover Instructions: Specify the tone, pace, and style to match the integrated content's mood and target audience (e.g., insightful, thought-provoking, friendly).
-    // The script should be concise, well-structured, and formatted for direct input into InVideo. The goal is to create a compelling video that not only informs but also captivates and encourages interaction, leveraging the interconnected nature of the topics and current trends.`,
+    // The script should be concise, well-structured, and formatted for direct input into InVideo. The goal is to create a compelling video that not only informs but also captivates and encourages interaction, leveraging the interconnected nature of the topics and current trends.`, 
     audible: "",
-    ebook: "make an incredible course based on this topic {{topic}}, this will be formatted in an ebook by me, so each heading should be contained in ** (e.g **Heading 1**)",
+    ebook: "",
 }
+
+
+
+
+
 
 //old script
 // `Help creators by providing personalized content related to AI tools and techniques that can assist with their content interests. You should generate a video script that is engaging, relatable, with practical content that combines the benefits of AI masterfully to these topics: {{topicsToReplace}}. All in a friendly and accessible manner. 

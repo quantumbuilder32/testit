@@ -1,29 +1,24 @@
 
-const Epub = require("epub-gen")
-const path = require("path")
+    const Epub = require("epub-gen")
+    const path = require("path")
+
+    const seenOptions = JSON.parse(`{
+  \"title\": \"grade 7 science\",
+  \"author\": \"Bruce Wedderburn\",
+  \"publisher\": \"Macmillan & Co.\",
+  \"cover\": \"https://images.pexels.com/photos/68507/spring-flowers-flowers-collage-floral-68507.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2\",
+  \"content\": [
+    {
+      \"title\": \"Physics for Grade 7\",
+      \"data\": \"<h2>Introduction to Physics</h2>\\n<p>Physics is the branch of science that deals with the study of matter, energy, and the fundamental forces of nature. In grade 7, students are introduced to basic physics concepts that lay the groundwork for more advanced studies in later years. This chapter will cover key topics such as motion, time, and electric current.</p>\\n\\n<h3>Introduction to Motion and Time</h3>\\n<p>Motion is a fundamental concept in physics that describes the change in position of an object with respect to time. Understanding motion involves learning about speed, distance, and time. Speed is a measure of how fast an object moves, and it can be calculated using the formula: speed = distance / time. This concept is crucial for understanding various phenomena in the natural world and in everyday life.</p>\\n\\n<h3>Types of Motion</h3>\\n<p>There are several types of motion, including uniform motion, where an object moves at a constant speed in a straight line, and non-uniform motion, where the speed of the object changes. Another important type is circular motion, where an object moves in a circular path.</p>\\n\\n<h3>Electric Current and Its Effects</h3>\\n<p>Electric current is the flow of electric charge, typically carried by electrons. This topic introduces students to the basics of electric current, including how it is generated, its heating and magnetic effects, and its practical applications. Understanding electric current is essential for grasping how electrical devices work and how electricity is used in daily life.</p>\\n\\n<h3>Examples</h3>\\n<p>Examples of motion include a car moving down the road, a ball rolling on the ground, and a planet orbiting around its star. For electric current, examples include the flow of electricity through a wire to power a light bulb or a computer.</p>\\n\\n<h3>Image Descriptions</h3>\\n<img src=\\\"https://oaidalleapiprodscus.blob.core.windows.net/private/org-AnuhMTTIzonR1oTHuKX1PdpL/user-1ppNDQsWSWK4DzKRe7qxpgkZ/img-kjmaBSZuDbD1Ivw56Mgxyitq.png?st=2024-09-09T23%3A36%3A47Z&amp;se=2024-09-10T01%3A36%3A47Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2024-09-09T23%3A15%3A57Z&amp;ske=2024-09-10T23%3A15%3A57Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=JW3Im6g53TO0a%2BuQHUYuZW5m4pYZrQ2yblnRIPF9%2BNI%3D\\\" alt=\\\"A diagram showing a car moving along a straight road with distance and time marked, illustrating the concept of speed. The diagram includes labels for speed, distance, and time, and an equation box showing the formula speed = distance / time.\\\" id=\\\"4c54739f-a585-4ee3-b783-efe3998668bd\\\">\\n<img src=\\\"https://oaidalleapiprodscus.blob.core.windows.net/private/org-AnuhMTTIzonR1oTHuKX1PdpL/user-1ppNDQsWSWK4DzKRe7qxpgkZ/img-CGHjg9yrYmcFlPiXc7tameXH.png?st=2024-09-09T23%3A36%3A48Z&amp;se=2024-09-10T01%3A36%3A48Z&amp;sp=r&amp;sv=2024-08-04&amp;sr=b&amp;rscd=inline&amp;rsct=image/png&amp;skoid=d505667d-d6c1-4a0a-bac7-5c84a87759f8&amp;sktid=a48cca56-e6da-484e-a814-9c849652bcb3&amp;skt=2024-09-09T23%3A18%3A46Z&amp;ske=2024-09-10T23%3A18%3A46Z&amp;sks=b&amp;skv=2024-08-04&amp;sig=56zVs9hjqIzsHlW1n/XQ2veG3KCc8dJtvEwtcGpfyQ4%3D\\\" alt=\\\"A simple circuit diagram showing a battery, a wire, and a light bulb. The diagram illustrates the flow of electric current from the battery through the wire to the light bulb, which is lit up.\\\" id=\\\"d9cdba45-3a81-4deb-8593-230b357a003a\\\">\\n\\n<h3>Practice Questions</h3>\\n<p>1. What is the formula to calculate speed? Provide an example using a car that travels 100 meters in 10 seconds.\\n2. Describe the difference between uniform and non-uniform motion.\\n3. What are the heating and magnetic effects of electric current? Provide an example for each.\\n4. If a car travels 200 kilometers in 4 hours, what is its average speed?</p>\\n\\n<h3>Summary</h3>\\n<p>This chapter introduces students to the basics of physics, focusing on motion and electric current. Understanding these concepts is crucial for a solid foundation in physics and for appreciating the natural world and technological advancements. By learning about speed, types of motion, and the effects of electric current, students gain a deeper insight into how the world works and how science applies to everyday life.</p>\"
+    }
+  ]
+}`)
+
+    const workingDirectory = path.join(process.cwd(), "Epubs", "grade 7 science.epub")
+
+    new Epub(seenOptions, workingDirectory).promise.then(
+        () => console.log("Ebook Generated Successfully!"),
+        err => console.error("Failed to generate Ebook because of ", err)
+    )
     
-const option = {
-    title: "Alice's Adventures in Wonderland", // *Required, title of the book.
-    author: "Lewis Carroll", // *Required, name of the author.
-    publisher: "Macmillan & Co.", // optional
-    cover: "https://images.pexels.com/photos/16534745/pexels-photo-16534745/free-photo-of-pavilions-on-gadisar-lake.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2", // Url or File path, both ok.
-    content: [
-        {
-            title: "About the author", // Optional
-            author: "John Doe", // Optional
-            data: "<h2>Charles Lutwidge Dodgson</h2>"
-            + "<div lang=\"en\">Better known by the pen name Lewis Carroll...</div>" // pass html string
-        },
-        {
-            title: "Down the Rabbit Hole",
-            data: "<p>Alice was beginning to get very tired...</p>"
-        },
-    ]
-};
-    
-const workingDirectory = path.join(process.cwd(), "Epubs", "ebook_1724906158073.epub")
- 
-new Epub(option, workingDirectory).promise.then(
-    () => console.log("Ebook Generated Successfully!"),
-    err => console.error("Failed to generate Ebook because of ", err)
-)

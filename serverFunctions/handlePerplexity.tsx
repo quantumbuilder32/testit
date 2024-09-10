@@ -75,7 +75,8 @@ export async function getTopKeywords(specificTopic?: string): Promise<keyword[]>
     return keywords
 }
 
-export async function getPerplexityEbook(prompt: string): Promise<string> {
+
+export async function getEbookMainTopics(prompt: string): Promise<string> {
     const response = await openaiPerplexity.chat.completions.create({
         model: "llama-3.1-sonar-large-128k-online",
         messages: [
@@ -93,6 +94,23 @@ export async function getPerplexityEbook(prompt: string): Promise<string> {
     return textResponse
 }
 
+export async function generateEbookImage(prompt: string): Promise<string> {
+    const response = await openaiPerplexity.chat.completions.create({
+        model: "llama-3.1-sonar-large-128k-online",
+        messages: [
+            {
+                role: "user",
+                content: prompt
+            }
+        ],
+    }
+    )
+
+    const textResponse = response.choices[0].message.content
+    if (textResponse === null) throw new Error("no text response from gpt")
+
+    return textResponse
+}
 
 
 
