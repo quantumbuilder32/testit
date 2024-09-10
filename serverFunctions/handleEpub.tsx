@@ -28,18 +28,23 @@ export async function generateEpub(options: Epub.Options) {
     const scriptPath = path.join(process.cwd(), "liveScript", "epubScript.js")
     await fs.writeFile(scriptPath, scriptText)
 
-    // Run the script
-    execFile('node', [scriptPath], (error, stdout, stderr) => {
-        if (error) {
-            throw new Error(`Error executing script: ${error.message}`);
-        }
+    await new Promise(resolve => {
+        // Run the script
+        execFile('node', [scriptPath], (error, stdout, stderr) => {
+            if (error) {
+                throw new Error(`Error executing script: ${error.message}`);
+            }
 
-        if (stderr) {
-            throw new Error(`Error output: ${stderr}`);
-        }
+            if (stderr) {
+                throw new Error(`Error output: ${stderr}`);
+            }
 
-        console.log(`Script output: ${stdout}`);
-    });
+            console.log(`Script output: ${stdout}`);
+            if (stdout.includes("successfully")) {//ensures it completed
+                resolve(true)
+            }
+        });
+    })
 };
 
 

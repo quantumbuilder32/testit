@@ -186,7 +186,18 @@ export default function EBookContent({ ...elProps }: {} & React.HTMLAttributes<H
     })
 
     const writingImageToDocument = useRef(false)
-    const imageLoadedList = useRef<{ [key: string]: "queued" | "success" | "error" }>({})
+    const imageLoader = useRef<{
+        list: {
+            [key: string]: {
+                status: "queued" | "success" | "error",
+                element: HTMLImageElement
+            }
+        },
+        running: boolean
+    }>({
+        list: {},
+        running: false
+    })
 
     type segmentData =
         {
@@ -312,21 +323,23 @@ export default function EBookContent({ ...elProps }: {} & React.HTMLAttributes<H
 
                             const parser = new DOMParser();
                             const doc = parser.parseFromString(content, 'text/html');
-                            const imgElements = doc.querySelectorAll('img');
+                            const seenImageElements = doc.querySelectorAll('img');
 
-                            if (imgElements.length > 0 && Object.entries(imageLoadedList.current).length === 0) {
+                            //notify loading images once
+                            if (seenImageElements.length > 0 && Object.entries(imageLoader.current).length === 0) {
                                 toast.success("loading images")
                             }
 
-                            imgElements.forEach(async (eachImageElement) => {
-                                // Get the alt text / image description
-                                const altText = eachImageElement.alt;
+                            //for each image element seen add to image loader
+                            seenImageElements.forEach(async (eachImageElement) => {
+                                // // Get the alt text / image description
+                                // const altText = eachImageElement.alt;
 
                                 // Add an id 
                                 eachImageElement.id = uuidV4()
 
                                 //add to image loader queue
-                                addToMediaLoaderQueue(eachImageElement.id, altText)
+                                addToMediaLoaderQueue(eachImageElement.id, eachImageElement)
                             });
 
                             // Serialize the updated HTML back to a string - add image sources to html
@@ -391,7 +404,7 @@ export default function EBookContent({ ...elProps }: {} & React.HTMLAttributes<H
         refresherSet(prev => !prev)
     }
 
-    function addToMediaLoaderQueue(id: string, description: string) {
+    async function addToMediaLoaderQueue(id: string, imageElement: HTMLImageElement) {
         //also starts the loader if not running
 
         //image queue loader
@@ -401,82 +414,133 @@ export default function EBookContent({ ...elProps }: {} & React.HTMLAttributes<H
         //track if its running - have options to refetch failed images - adjust prompt
 
         //query image generation api
-        imageLoadedList.current[id] = "queued"
+        imageLoader.current.list[id] = {
+            status: "queued",
+            element: imageElement
+        }
 
-        fetch(`/api/generateImage?description=${description}`)
-            .then(response => response.json())
-            .then(src => {
-                const checkToWrite = () => {
-                    if (writingImageToDocument.current) {
+        //if not running - start running
+        if (!imageLoader.current.running) {
+            imageLoader.current.running = true //just to update value
+
+            runMediaLoader()
+        }
+    }
+
+    async function runMediaLoader() {
+        //get current list and process n queued images
+        const step = 5
+        const imageArrayList = Object.entries(imageLoader.current.list)
+        const queuedImages = imageArrayList.filter(eachEntry => eachEntry[1].status === "queued").slice(0, step)
+
+        const startTime = Date.now()
+
+        //fetch the images
+        await Promise.all(
+            queuedImages.map(async eachEntry => {
+                const imageId = eachEntry[0]
+                const imageObj = eachEntry[1]
+                const imageDescription = imageObj.element.alt
+
+                try {
+                    const response = await fetch(`/api/generateImage?description=${imageDescription}`)
+                    const newImageSrc = await response.json()
+
+                    const checkToWrite = () => {
                         //cant write now try again later
-                        console.log(`$cant write not trying later`);
+                        if (writingImageToDocument.current) {
+                            console.log(`$cant write not trying later`);
 
-                        //check back later
-                        setTimeout(() => {
-                            checkToWrite()
-                        }, 100);
+                            //check back later
+                            setTimeout(() => {
+                                checkToWrite()
+                            }, 100);
 
-                    } else {
-                        //update content that has correct id with src
-                        writingImageToDocument.current = true
+                        } else {
+                            //update content that has correct id with src
+                            writingImageToDocument.current = true
 
-                        //update content with image src
-                        epubOptionsSet(prevOtions => {
-                            const newOptions = { ...prevOtions }
+                            //update content with image src
+                            epubOptionsSet(prevOtions => {
+                                const newOptions = { ...prevOtions }
 
-                            newOptions.content = newOptions.content.map(eachContentSection => {
-                                const smallParser = new DOMParser();
-                                const smallDocument = smallParser.parseFromString(eachContentSection.data, 'text/html');
+                                newOptions.content = newOptions.content.map(eachContentSection => {
+                                    const parser = new DOMParser();
+                                    const document = parser.parseFromString(eachContentSection.data, 'text/html');
 
-                                const smallImgElements: NodeListOf<HTMLImageElement> = smallDocument.querySelectorAll(`img`);
+                                    const imageElementsInDocument: NodeListOf<HTMLImageElement> = document.querySelectorAll(`img`);
 
-                                let foundImgId = false
-                                smallImgElements.forEach(eachSmallImageElement => {
-                                    if (eachSmallImageElement.id === id) {
-                                        foundImgId = true
+                                    let foundImgId = false
+                                    imageElementsInDocument.forEach(eachImageElement => {
+                                        if (eachImageElement.id === imageId) {
+                                            foundImgId = true
 
-                                        // update the src on the image if id matches
-                                        eachSmallImageElement.src = src
-                                    }
-                                })
-
-                                if (foundImgId) {
-                                    //update the data for the correct id
-                                    eachContentSection.data = smallDocument.body.innerHTML
-                                    imageLoadedList.current[id] = "success"
-
-                                    //if all fields equal success then loading finished
-                                    const seenLoadedEntries = Object.entries(imageLoadedList.current)
-
-                                    let successCount = 0
-                                    seenLoadedEntries.forEach(eachEntry => {
-                                        if (eachEntry[1] === "success") {
-                                            successCount++
+                                            // update the src on the image if id matches
+                                            eachImageElement.src = newImageSrc
                                         }
                                     })
 
-                                    if (successCount === seenLoadedEntries.length) {
-                                        toast.success("all images loaded!")
+                                    if (foundImgId) {
+                                        //update the data for the correct id
+                                        eachContentSection.data = document.body.innerHTML
+                                        imageLoader.current.list[imageId].status = "success"
                                     }
-                                }
 
-                                return eachContentSection
+                                    return eachContentSection
+                                })
+
+                                return newOptions
                             })
 
-                            return newOptions
-                        })
-
-                        writingImageToDocument.current = false
+                            writingImageToDocument.current = false
+                        }
                     }
-                }
 
-                checkToWrite()
+                    checkToWrite()
+
+                } catch (error) {
+                    console.log(`$error fetching images`, error);
+                    imageLoader.current.list[imageId].status = "error"
+                }
             })
-            .catch(error => {
-                console.log(`$error fetching images`, error);
-                imageLoadedList.current[id] = "error"
-            })
+        )
+
+        //check for success and more items
+        const seenLoadedEntries = Object.entries(imageLoader.current.list)
+        let successCount = 0
+        let queuedCount = 0
+
+        seenLoadedEntries.forEach(eachEntry => {
+            if (eachEntry[1].status === "success") {
+                successCount++
+            }
+
+            if (eachEntry[1].status === "queued") {
+                queuedCount++
+            }
+        })
+
+        if (successCount === seenLoadedEntries.length) {
+            toast.success("all images loaded!")
+            imageLoader.current.running = false
+        }
+
+        //check time
+        const endTime = Date.now()
+        const timeDifference = endTime - startTime
+
+        const waitTime = timeDifference > 60000 ? 0 : (60000 - timeDifference + 5000)
+
+        //ensure don't hit rate limit - wait
+        await new Promise(resolve => setTimeout(resolve, waitTime))
+
+        //rerun function cause more to do
+        if (queuedCount > 0) {
+            toast.success("loading more images")
+            runMediaLoader()
+        }
     }
+
     return (
         <div {...elProps} style={{ padding: "1rem", gap: "1rem", ...elProps?.style }}>
             <input type='text' value={topic} onChange={(e) => { topicSet(e.target.value) }} placeholder="Ebook topic" />
